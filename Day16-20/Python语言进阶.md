@@ -767,7 +767,55 @@
          main()
      ```
 
-   - 对象的复制（深复制/深拷贝/深度克隆和浅复制/浅拷贝/影子克隆）
+   - 对象的复制（深复制/深拷贝/深度克隆和浅复制/浅拷贝/影子克隆）https://www.cnblogs.com/xueli/p/4952063.html：
+   （1）直接赋值,默认浅拷贝传递对象的引用而已,原始列表改变，被赋值的b也会做相同的改变
+   >>> b=alist
+   >>> print b
+   [1, 2, 3, ['a', 'b']]
+   >>> alist.append(5)
+   >>> print alist;print b
+   [1, 2, 3, ['a', 'b'], 5]
+   [1, 2, 3, ['a', 'b'], 5]
+   
+   （2）copy浅拷贝，没有拷贝子对象(共享子对象)，所以原始数据改变，子对象会改变
+   
+   >>> import copy
+
+   >>> c=copy.copy(alist)
+   >>> print alist;print c
+   [1, 2, 3, ['a', 'b']]
+   [1, 2, 3, ['a', 'b']]
+   >>> alist.append(5)
+   >>> print alist;print c
+   [1, 2, 3, ['a', 'b'], 5]
+   [1, 2, 3, ['a', 'b']]
+
+   >>> alist[3]
+   ['a', 'b']
+   >>> alist[3].append('cccc')
+   >>> print alist;print c
+   [1, 2, 3, ['a', 'b', 'cccc'], 5]
+   [1, 2, 3, ['a', 'b', 'cccc']] 里面的子对象被改变了
+   
+   （3）深拷贝，包含对象里面的自对象的拷贝，所以原始对象的改变不会造成深拷贝里任何子元素的改变
+   
+   >>> import copy
+
+   >>> d=copy.deepcopy(alist)
+   >>> print alist;print d
+   [1, 2, 3, ['a', 'b']]
+   [1, 2, 3, ['a', 'b']]始终没有改变
+   >>> alist.append(5)
+   >>> print alist;print d
+   [1, 2, 3, ['a', 'b'], 5]
+   [1, 2, 3, ['a', 'b']]始终没有改变
+   >>> alist[3]
+   ['a', 'b']
+   >>> alist[3].append("ccccc")
+   >>> print alist;print d
+   [1, 2, 3, ['a', 'b', 'ccccc'], 5]
+   [1, 2, 3, ['a', 'b']]  始终没有改变
+   
 
    - 垃圾回收、循环引用和弱引用
 
